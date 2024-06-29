@@ -1,0 +1,14 @@
+services:
+  backend_flask:
+    image: backend_flask:latest
+    build:
+      context: ./backend_flask
+    ports:
+      - "5000:5000"
+
+  frontend:
+    image: frontend:latest
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
