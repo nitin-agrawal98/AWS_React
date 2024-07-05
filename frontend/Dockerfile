@@ -1,10 +1,18 @@
-FROM node:alpine
+FROM node:alpine AS build
+
+RUN yarn global add serve
 
 WORKDIR /app
 
-COPY package.json /app/
-RUN yarn install
-
 COPY . /app/
 
-CMD [ "yarn", "start" ]
+RUN yarn install && yarn build
+
+FROM nginx:alpine
+
+COPY --from=build /app/build /usr/share/nginx/html
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
