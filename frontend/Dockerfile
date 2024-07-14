@@ -1,12 +1,14 @@
 FROM node:alpine AS build
 
-RUN yarn global add serve
-
 WORKDIR /app
 
-COPY . /app/
+COPY package.json .
 
-RUN yarn install && yarn build
+RUN yarn install
+
+COPY . .
+
+RUN yarn build
 
 FROM nginx:alpine
 
